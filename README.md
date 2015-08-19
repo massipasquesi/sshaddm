@@ -4,11 +4,9 @@
 
 This bash script 'sshaddm' help you to add multiples keys to your ssh-agent with only one command.
 
-```html
-<strong style="color:red">It run correctly if you have the same passphrase for all yours keys you want to add in one time !!</strong>
+<strong><font color='red'>It run correctly if you have the same passphrase for all yours keys you want to add in one time !!</font></strong>
 
 <strong style="color:blue">In next version I'll add the possibility to add keys by passphrase's group ...**</strong>
-```
 
 Take a look at [TODO.md](https://github.com/massipasquesi/sshaddm/blob/master/TODO.md) ;)
 
