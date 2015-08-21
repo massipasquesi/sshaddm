@@ -22,11 +22,12 @@ Tested on **Ubuntu/Debian**
 
 ### DEPENDS ###
 
-+ **_openssh-client_**  
-> how verify :  
-> ```dpkg -s openssh-client```  
-> how install (**But Normally you would not be here if you don't know what is _openssh-client_ and how it runs ;)**) :  
-> ``` sudo apt-get install openssh-client```  
++ **_openssh-client_**
+
+> how verify :
+> ```dpkg -s openssh-client```
+> how install (**But Normally you would not be here if you don't know what is _openssh-client_ and how it runs ;)**) :
+> ``` sudo apt-get install openssh-client```
 
 ## INSTALL
 
