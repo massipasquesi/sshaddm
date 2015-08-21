@@ -3,8 +3,8 @@
 ### ssh-add multi-keys bash script ###
 
 ### [VERSION](https://github.com/massipasquesi/sshaddm/blob/master/VERSION.md) ###
-
-**This is a DEV version, so NO STABLE version**
+:heavy_exclamation_mark: :zero:**.**:one:**-dev** :heavy_exclamation_mark:
+:boom:  **This is a DEV version, so NO STABLE version**
 
 This bash script 'sshaddm' help you to add multiples keys to your ssh-agent with only one command.
 
