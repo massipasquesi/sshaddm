@@ -2,7 +2,7 @@
 
 ### ssh-add multi-keys bash script ###
 
-### [VERSION](https://github.com/massipasquesi/sshaddm/blob/master/VERSION) ###
+### [VERSION](https://github.com/massipasquesi/sshaddm/blob/master/VERSION.md) ###
 
 **This is a DEV version, so NO STABLE version**
 
