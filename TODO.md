@@ -17,5 +17,5 @@
   - [x] Filter `ls` by $keys_prefix
   - [ ] Filter files for `ls` with only PRIVATE KEYS
 
-- [ ] End ask user for $keys_names when enter ':end' or ':e' or ':w'
+- [x] End ask user for $keys_names when enter ':end'
 
