@@ -13,8 +13,8 @@
 
 - [ ] Do `ls` for keys in $keys_path when prompt for $keys_names
   - [x] Do `ls` when user enter ':ls'
-  - [ ] Verify  $keys_path for `ls`
-  - [ ] Filter `ls` by $keys_prefix
+  - [x] Verify  $keys_path for `ls`
+  - [x] Filter `ls` by $keys_prefix
   - [ ] Filter files for `ls` with only PRIVATE KEYS
 
 - [ ] End ask user for $keys_names when enter ':end' or ':e' or ':w'

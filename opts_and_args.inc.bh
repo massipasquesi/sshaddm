@@ -8,10 +8,13 @@ version()
         grep_color="always"; version_color="$VIOLET"; end_color="$E_C"
     fi
     if [ "$verbose" == true ]; then
-        echo -e "\n${version_color}$(cat VERSION.md)${end_color}\n"
+        cat_version=$(cat VERSION.md);
     else
-        echo -e "\n$(cat VERSION.md | grep -w --color="$grep_color" '\*')\n"
+        #cat_version=$(cat VERSION.md | grep --color="$grep_color" '^\*[[:print:]]*\*$')
+        cat_version=$(cat VERSION.md | grep --color="$grep_color" '\*')
     fi
+
+    echo -e "\n${version_color}${cat_version}${end_color}\n"
 }
 
 usage()

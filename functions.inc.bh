@@ -35,11 +35,27 @@ goornotgo()
     fi
 }
 
+# do ls of $keys_path directory filterd by $keys_prefix
+ls_keys()
+{
+    ls_pk=$(ls "$keys_path" | grep -v ".pub")
+    ls_filtered=""
+
+    if [ "$keys_prefix" != "" ]; then
+        for lskey in $(echo -e "$ls_pk" | grep "$keys_prefix"); do
+            ls_filtered="${ls_filtered}${lskey##keys_prefix}\n"
+        done
+        echo -e "$ls_filtered"
+    else
+        echo "$ls_pk"
+    fi
+}
+
 ######################
 #   VERBOSE OUTPUT   #
 ######################
 
-# fais un echo seulement si $verbose est à true
+# do echo only if $verbose is true
 vecho()
 {
     if [ "$verbose" == true ]; then
@@ -47,7 +63,7 @@ vecho()
     fi
 }
 
-# fais un cat d'un fichier seulement si $verbose est à true
+# do cat of a file only if $verbose is true
 vcat()
 {
     if [ "$verbose" == true ]; then
@@ -59,6 +75,8 @@ vcat()
     fi
 }
 
+# if $verbose is true
+# do echo of each var like : "name = value"
 vechovars()
 {
     if [ "$verbose" == true ]; then
@@ -73,6 +91,7 @@ vechovars()
 ###         ###
 #\o/ DEBUG \o/#
 ###         ###
+
 printdebug()
 {
     if [ "$debug" == true ]; then
@@ -157,7 +176,7 @@ cecho()
 {
     local c_echo=""; local end_color=""
     if [ "$colors" == true ]; then
-        c_echo="$BLUE0"; end_color="$E_C"
+        c_echo="$BLUE"; end_color="$E_C"
     fi
 
     echo -e "${c_echo}${*}${end_color}"

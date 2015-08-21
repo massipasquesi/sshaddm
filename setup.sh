@@ -15,46 +15,54 @@ default_keys_path="${HOME}/.ssh"
 ###############################################
 
 # 1. # Define '$keys_path' # #
-cecho "I'll ask you the full path of the ssh_keys's folder."
-cecho "No trailing slashes at the end of the path !"
-cecho "Leave blank if you want [default=value]"
-question=$(cecho "Please enter the full path of the ssh_keys's folder [default=\$HOME/.ssh] : ")
-read -p "$question" keys_path
-if [ "$keys_path" == "" ]; then
-    keys_path=$default_keys_path
-fi
+vecho "I'll ask you the full path of the ssh_keys's folder."
+vecho "No trailing slashes at the end of the path !"
+vecho "Leave blank if you want [default=value]"
+vecho ""
+while [ ! -d  "$keys_path" ]; do
+    question=$(cecho "Please enter the full path of the ssh_keys's folder [default=\$HOME/.ssh] : ")
+    read -p "$question" keys_path
+    if [ "$keys_path" == "" ]; then
+        keys_path=$default_keys_path
+    fi
+    if [ ! -d  "$keys_path" ]; then
+        eerror "${keys_path} does not exists or is not a directory";
+    fi
+done
+echo ""
 
 # 2. # Define '$keys_prefix' # #
-cecho "I'll ask you (if one exists) the prefix of all your keys."
-cecho "Leave blank if you won't to set prefix."
+vecho "I'll ask you (if one exists) the prefix of all your keys."
+vecho "Leave blank if you won't to set prefix."
+vecho ""
 question=$(cecho "Please enter the keys's prefix : ")
 read -p "$question" keys_prefix
 #: strip whitespaces from $keys_prefix
-keyprefix=${keyprefix//[[:space:]]}
+keys_prefix=${keys_prefix//[[:space:]]}
+echo ""
 
 # 3. # Define '$keys_names' # #
-cecho "I'll ask you ssh_key's names."
-cecho "If you setted \$keys_prefix remove it (${keys_prefix}) from key's name"
-cecho "You can enter in one time, separating them with a space"
-cecho "Or enter one name at a time"
-cecho "If you would like to have a list of key in your keys's directory : ${keys_path}, enter ':ls'"
-cecho "Leave blank when you've done"
+vecho "I'll ask you ssh_key's names."
+vecho "If you setted \$keys_prefix remove it (${keys_prefix}) from key's name"
+vecho "You can enter in one time, separating them with a space"
+vecho "Or enter one name at a time"
+vecho "If you would like to have a list of key in your keys's directory : ${keys_path}, enter ':ls'"
+vecho "Enter ':end' when you've done"
+vecho ""
 question=$(cecho "Please enter ssh_key(s)'s name(s)' : ")
 keys_names=""
-key_name="start"
-while [ "$key_name" != "stop" ]; do
+
+while true; do
     read -p "$question" key_name
     if [ "$key_name" == ":ls" ]; then
-        ls ${keys_path}
-    # if user leave blank break the loop
-    elif [ "$key_name" == "" ]; then
-        if [ "$keys_names" == "" ]; then
-            eerror "\$keys_names variable cannot be empty !!!"
-        else
-            key_name="stop"
-        fi
+        ls_keys
+    # if user leave blank echo error message
+    elif [ "$key_name" == "" -a "$keys_names" == "" ] || [ "$key_name" == ":end" -a "$keys_names" == "" ]; then
+        eerror "\$keys_names variable cannot be empty !!!"
+    elif [ "$key_name" == "" -a "$keys_names" != "" ] || [ "$key_name" == ":end" -a "$keys_names" != "" ]; then
+        break
     else
-        # add $key_name to the $keys_names var 
+        # add $key_name to the $keys_names var stripping $keys_prefix if exists
         if [ "$keys_names" == "" ]; then
             keys_names="$key_name"
         else
@@ -62,6 +70,8 @@ while [ "$key_name" != "stop" ]; do
         fi
     fi
 done
+
+
 # unset loop's variable $key_name and $question
 unset key_name question
 
