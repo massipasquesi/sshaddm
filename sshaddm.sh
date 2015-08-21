@@ -55,7 +55,7 @@ fi
 
 let "success = -1"
 while [ $success != 0 ]; do
-    ssh-add $KEYS 2>&1
+    ssh-add $keys_full_names 2>&1
     let "success = $?"
     case $success in
         0)

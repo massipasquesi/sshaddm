@@ -43,7 +43,7 @@ ls_keys()
 
     if [ "$keys_prefix" != "" ]; then
         for lskey in $(echo -e "$ls_pk" | grep "$keys_prefix"); do
-            ls_filtered="${ls_filtered}${lskey##keys_prefix}\n"
+            ls_filtered="${ls_filtered}${lskey##${keys_prefix}}\n"
         done
         echo -e "$ls_filtered"
     else
