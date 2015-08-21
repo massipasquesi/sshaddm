@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -e
+
+### DEFINE VARIABLES ###
+
+## define $keys_path : path to yours ssh_keys. ##
+## No trailing slashs at the end of the path ! ##
+##-> exemple : all your keys in "your home"/.ssh directory :
+# keys_path="${HOME}/.ssh"
+keys_path=""
+
+## if all your keys have the same prefix -> set $keys_prefix. ##
+## if not set to empty string : "" ##
+##-> exemple : all your keys's names are prefixed by "id_dsa_" :
+# keys_prefix="id_dsa_"
+##-> exemple : keys's names have differents prefix or they don't have any :
+# keys_prefix=""
+keys_prefix=""
+
+## define $keys_names : list ok keys's names separated by a space. ##
+## if you setted $keys_prefix remove it from key's name ##
+##-> exemple : all your keys's names have the same prefix $keys_prefix like :
+##:: id_dsa_firstkey, id_dsa_secondkey, id_dsa_thirdkey
+#keys_names="firstkey secondkey thirdkey"
+##-> exemple : keys's names have differents prefix or they don't have any like :
+##:: mykey, another_key, my_prefered_key
+#keys_names="id_dsa_mykey another_key my_prefered_key"
+keys_names=""

@@ -1,14 +1,32 @@
 # SSHADDM
 
-*_ssh-add multi-keys bash script_*
+### ssh-add multi-keys bash script ###
+
+### [VERSION](https://github.com/massipasquesi/sshaddm/blob/master/VERSION) ###
+
+**This is a DEV version, so NO STABLE version**
 
 This bash script 'sshaddm' help you to add multiples keys to your ssh-agent with only one command.
 
-<strong><font color='red'>It run correctly if you have the same passphrase for all yours keys you want to add in one time !!</font></strong>
+**It run correctly if you have the same passphrase for all yours keys you want to add in one time !!**
 
-<strong style="color:blue">In next version I'll add the possibility to add keys by passphrase's group ...**</strong>
+**_In next version I'll add the possibility to add keys by passphrase's group ..._**
 
 Take a look at [TODO.md](https://github.com/massipasquesi/sshaddm/blob/master/TODO.md) ;)
+
+## REQUIREMENTS
+
+### OPERATING SYSTEM ###
+
+Tested on **Ubuntu/Debian**
+
+### DEPENDS ###
+
++ **_openssh-client_**
+> how verify : 
+> ```dpkg -s openssh-client```
+> how install (**But Normally you would not be here if you don't know what is _openssh-client_ and how it runs ;)**) :
+> ``` sudo apt-get install openssh-client```
 
 ## INSTALL
 
@@ -40,7 +58,7 @@ sshaddm
 
 When you run sshaddm for the first time you'll invited to set configuration variables from the prompt.
 
-You can set variables manually by copying 'define.example' and naming it 'define.inc.bh' into $SSHADDM-DIR-NAME  
+You can set variables manually by copying 'define.example' and naming it 'define.rc' into $SSHADDM-DIR-NAME  
 and set variables like explained in this CONFIG section below.
 
 Everytime you want to change configuration variables you can do it manually or running 'setup.sh'

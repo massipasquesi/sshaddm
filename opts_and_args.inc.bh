@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+set -e
+
+version()
+{
+    grep_color="never"; version_color=""; end_color=""
+    if [ "$colors" == true ]; then 
+        grep_color="always"; version_color="$VIOLET"; end_color="$E_C"
+    fi
+    if [ "$verbose" == true ]; then
+        echo -e "\n${version_color}$(cat VERSION.md)${end_color}\n"
+    else
+        echo -e "\n$(cat VERSION.md | grep -w --color="$grep_color" '\*')\n"
+    fi
+}
+
+usage()
+{
+    version
+    cecho "\nUsage: sshaddm [-cvd] [-s|-r|-a|-p]\n"
+}
+
+help()
+{
+    usage
+    cecho ""
+    cecho "  -a, --ask      Ask interactively ssh_keys's variables only for this time and don't write new configuration file"
+    cecho "  -c, --colors   Output text with colors"
+    cecho "  -d, --debug    Enable debug output"
+    cecho "  -h, --help     Display this help message and exit"
+    cecho "  -p, --purge    Delete configuration file"
+    cecho "  -r, --run      Run 'setup.sh' to write new configuration file and than run 'sshaddm'"
+    cecho "  -s, --setup    Run 'setup.sh' to write new configuration file and exit"
+    cecho "  -v, --verbose  Enable verbose output"
+    cecho "  -V, --version  Display the version number and exit"
+    cecho ""
+    cecho "  If more then one options between -s, -r -a or -p are used, only the last is performed !"
+    cecho "  For more information, see https://github.com/massipasquesi/sshaddm"
+    cecho ""
+}
+
+options=()
+arguments=()
+for arg in "$@"; do
+  if [ "${arg:0:1}" = "-" ]; then
+    if [ "${arg:1:1}" = "-" ]; then
+      options[${#options[*]}]="${arg:2}"
+    else
+      index=1
+      while option="${arg:$index:1}"; do
+        [ -n "$option" ] || break
+        options[${#options[*]}]="$option"
+        let index+=1
+      done
+    fi
+  else
+    arguments[${#arguments[*]}]="$arg"
+  fi
+done
+
+for option in "${options[@]}"; do
+    case "$option" in
+        "d" | "debug" )
+            debug=true
+            ;;
+        "v" | "verbose" )
+            verbose=true
+            ;;
+        "c" | "colors" )
+            colors=true
+            ;;
+        "h" | "help" )
+            help
+            exit 0
+            ;;
+        "V" | "version" )
+            version
+            exit 0
+            ;;
+        "p" | "purge" )
+            if [ -f "$define_file" ] ; then
+                rm -v "$define_file"
+            fi
+            exit 0;
+            ;;
+        "s" | "setup" )
+            setup="only"
+            ;;
+        "r" | "run" )
+            setup="yes"
+            ;;
+        "a" | "ask" )
+            setup="temp"
+            ;;
+        * )
+          usage >&2
+          exit 1
+          ;;
+    esac
+done
+
+
+# if [ "${#arguments[@]}" -eq 0 ]; then
+#   usage >&2
+#   exit 1
+# fi

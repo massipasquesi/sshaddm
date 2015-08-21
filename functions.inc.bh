@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+set -e
+
+#########################
+#   SSHADDM FUNCTIONS   #
+#########################
+
+# @name goornotgo
+# Ask to user a response of type (y/n) and return the answer
+#
+# @arguments :
+# $1 (unrequired) : string : question
+#
+# @return 0 if answer is y ou Y
+# @return 1 if answer is n ou N
+# @return 99 if answer is whatever
+#
+goornotgo()
+{
+    if [ "$1" != "" ]; then
+        QUESTION=$(cecho "$1")
+    else
+        QUESTION=$(cecho "continuer ?")
+    fi
+    read -p "$QUESTION (y/n) : " GO
+    if [ "$GO" == "y" ] || [ "$GO" == "Y" ]; then
+        return 0
+    elif [ "$GO" == "n" ] || [ "$GO" == "N" ]; then
+        return 1
+    else
+    {
+        eerror "Il faut taper y ou n!! Pas $GO"
+        return 99
+    }
+    fi
+}
+
+######################
+#   VERBOSE OUTPUT   #
+######################
+
+# fais un echo seulement si $verbose est à true
+vecho()
+{
+    if [ "$verbose" == true ]; then
+        enotice "$*"
+    fi
+}
+
+# fais un cat d'un fichier seulement si $verbose est à true
+vcat()
+{
+    if [ "$verbose" == true ]; then
+        if [ "$colors" == true ]; then
+            color_bash_cat "$1"
+        else
+            cat "$1"
+        fi
+    fi
+}
+
+vechovars()
+{
+    if [ "$verbose" == true ]; then
+        for var_name in $*; do
+            eval var_value=\$$var_name
+            enotice "$var_name = $var_value"
+        done
+    fi
+}
+
+
+###         ###
+#\o/ DEBUG \o/#
+###         ###
+printdebug()
+{
+    if [ "$debug" == true ]; then
+        for var_name in $*; do
+            eval var_value=\$$var_name
+            edebug "$var_name = $var_value"
+        done
+    fi
+}
+
+breakpoint()
+{
+    printdebug $*
+    echo "breakpoint !"
+    exit 9;
+}
+
+echodebug()
+{
+    if [ "$debug" == true ]; then
+        edubug "$*"
+    fi
+}
+
+
+##############
+#   COLORS   #
+##############
+
+### COLORS VARIABLES
+TODO_COLOR='\033[0;34;47m'
+ENDCOLOR='\033[0m'
+E_C="$ENDCOLOR"
+BLUE='\033[1;34m'
+BLUE0='\033[0;34m'
+CYAN0='\e[0;36m'
+CYAN='\e[1;36m'
+GREEN='\033[1;32m'
+GREEN0='\033[0;32m'
+RED='\033[1;31m'
+RED0='\033[0;31m'
+VIOLET='\033[1;35m'
+VIOLET0='\033[0;35m'
+YELLOW='\033[1;33m'
+YELLOW0='\033[0;33m'
+WHITE0='\e[0;37m'
+WHITE='\e[1;37m'
+
+### REGEX & COLORS
+# REGEXs
+rx_comment='^#.*$'
+rx_command='^[:alpha:]+[:space:]?[:print:]*$'
+rx_varass='^[:graph:]+=?[:graph:]*$'
+# COLORS
+c_comment="$BLUE0"
+c_command="$YELLOW0"
+c_varass="$CYAN"
+
+
+# FUNCTIONS
+
+color_bash_cat()
+{
+    OLDIFS=$IFS
+    IFS="|"
+    for line in `cat "$1"`; do
+        # comments
+        if [[ "$line" =~ "$rx_comment" ]]; then
+            echo -e "${c_comment}${line}${E_C}"
+        # commands
+        elif [[ "$line" =~ "$rx_command" ]]; then
+            echo -e "${c_command}${line}${E_C}"
+        # var assignement
+        elif [[ "$line" =~ "$rx_varass" ]]; then
+            echo -e "${c_varass}${line}${E_C}"
+        fi
+    done
+    IFS=$OLDIFS
+}
+
+cecho()
+{
+    local c_echo=""; local end_color=""
+    if [ "$colors" == true ]; then
+        c_echo="$BLUE0"; end_color="$E_C"
+    fi
+
+    echo -e "${c_echo}${*}${end_color}"
+}
+
+enotice()
+{
+    local c_notice="" local end_color=""
+    if [ "$colors" == true ]; then
+        c_notice="$GREEN"; end_color="$E_C"
+    fi
+
+    echo -e "${c_notice}${*}${end_color}"
+}
+
+ewarning()
+{
+    local c_warning="" local end_color=""
+    if [ "$colors" == true ]; then
+        c_warning="$YELLOW"; end_color="$E_C"
+    fi
+
+    echo -e "${c_warning}${*}${end_color}"
+}
+
+eerror()
+{
+    local c_error="" local end_color=""
+    if [ "$colors" == true ]; then
+        c_error="$RED"; end_color="$E_C"
+    fi
+
+    echo -e "${c_error}${*}${end_color}"
+}
+
+edebug()
+{
+    local c_debug="" local end_color=""
+    if [ "$colors" == true ]; then
+        c_debug="$CYAN"; end_color="$E_C"
+    fi
+
+    echo -e "${c_debug}${*}${end_color}"
+}
+

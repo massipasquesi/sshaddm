@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -e
+
+## Define Constants
+# const define_file
+readonly define_file="define.rc"
+# const inc_ext
+readonly inc_ext="\.inc\.bh"
+
+## Init variables
+debug=false
+verbose=false
+colors=false
+# init $setup
+if [ -f "$define_file" ]; then
+    setup="found"
+else
+    setup="null"
+fi
+
+# source .inc.bh files
+for inc_file in `ls ./ | grep -e "${inc_ext}"`; do
+    if [ "$inc_file" != "$define_file" ]; then
+        . $inc_file
+    fi
+done
+
+# if verbose then print version at script start
+if [ "$verbose" == true ]; then version ; fi
+
+#\o/ DEBUG \o/#
+#breakpoint "setup" "debug"
+
+# run setup if needed :)
+if [ "$setup" != "found" ]; then
+    . setup.sh
+    if [ "$setup" == "only" ]; then
+        exit 0;
+    fi
+fi
+
+# source $define_file if $setup != "temp"
+if [ "$setup" != "temp" ]; then
+    . "$define_file"
+fi
